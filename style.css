@@ -1,0 +1,42 @@
+#reactContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: auto;
+}
+
+.Thread {
+  flex: 1 0 auto;
+  width: 300px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+}
+
+.Message {
+  flex: 0 1 auto;
+
+  border-color: blue;
+  border-width: 2px;
+  border-style: solid;
+}
+
+#textbox {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  height: 40px;
+  padding: 0;
+}
+
+.viewbox {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  flex: 1 0 auto;
+  width: 100%;
+  overflow: auto;
+  padding-bottom: 40px;
+
+}

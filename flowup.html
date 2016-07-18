@@ -1,0 +1,55 @@
+<head>
+  <script src="https://fb.me/react-15.2.1.js"></script>
+  <script src="https://fb.me/react-dom-15.2.1.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.13.1/lodash.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<script>
+
+  let sampleMessages = ['hi', 'yo', 'hello', 'chuckwudi', "it's raining today", 'i just got engaged!', 'that sux :(', "how's it goin?"];
+
+  let Message = React.createClass({
+    render: function() {
+      return React.createElement('div', {className: "Message"}, this.props.message);
+    }
+  });
+
+  let Thread = React.createClass({
+    getInitialState: function() {
+      return {
+        messages: [_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)]
+      };
+    },
+    createMessage: function() {
+      let messages = this.state.messages
+      messages.unshift(_.sample(sampleMessages));
+      this.setState({messages})
+    },
+    componentDidMount: function() {
+      setInterval(this.createMessage, 400);
+    },
+    render: function() {
+      let messagePonents = this.state.messages.map(function(message, key) {
+        return React.createElement(Message, {message, key})
+      });
+      return React.createElement('div', {className: 'Thread'}, messagePonents);
+    }
+  });
+
+  let Textbox = React.createClass({
+    render: function() {
+      return React.createElement('input', {type: 'textbox', className: 'Textbox'});
+    }
+  });
+
+  window.onload = function() {
+    let thread = React.createElement(Thread);
+    let viewbox = React.createElement('div', {className: 'viewbox'}, thread);
+    ReactDOM.render(React.createElement('div', {}, viewbox),document.getElementById('reactContainer'))
+  }
+</script>
+<body>
+  <div id="reactContainer"></div>
+  <input type="textbox" id="textbox">
+
+</body>
