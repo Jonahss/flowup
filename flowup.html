@@ -15,26 +15,55 @@
   });
 
   var Thread = React.createClass({
-    getInitialState: function() {
-      return {
-        messages: [_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)]
-      };
-    },
-    createMessage: function() {
-      var messages = this.state.messages
-      messages.unshift(_.sample(sampleMessages));
-      this.setState({messages})
-    },
-    componentDidMount: function() {
-      setInterval(this.createMessage, 400);
-    },
     render: function() {
-      var messagePonents = this.state.messages.map(function(message, key) {
+      var messagePonents = this.props.messages.map(function(message, key) {
         return React.createElement(Message, {message, key})
       });
       return React.createElement('div', {className: 'Thread'}, messagePonents);
     }
   });
+
+  var Viewbox = React.createClass({
+    getInitialState: function(){
+      return {
+        messages: this.props.messages
+      }
+    },
+    createMessage: function() {
+      var messages = this.state.messages
+      messages.unshift(_.sample(sampleMessages));
+      this.setState({messages: messages, messagesLength: messages.length})
+    },
+    componentDidMount: function() {
+      setInterval(this.createMessage, 400);
+    },
+    componentDidUpdate: function(prevProps, prevState) {
+      if (this.state.messagesLength > prevState.messagesLength) {
+        this.setState({pink: 1})
+      }
+    },
+    fade: function() {
+      let fad = function() {
+        this.setState({pink: this.state.pink-1});
+      }.bind(this)
+
+      setTimeout(fad, 100);
+    },
+    render: function() {
+      var bgColor = 'white';
+      if (this.state.pink > 0) {
+        bgColor = 'pink';
+        this.fade();
+      }
+
+      var style = {
+        backgroundColor: bgColor
+      }
+
+      thread = React.createElement(Thread, {messages: this.state.messages});
+      return React.createElement('div', {className: 'viewbox', style: style}, thread);
+    }
+  })
 
   var Textbox = React.createClass({
     render: function() {
@@ -43,13 +72,12 @@
   });
 
   window.onload = function() {
-    var thread = React.createElement(Thread);
-    var viewbox = React.createElement('div', {className: 'viewbox'}, thread);
-    ReactDOM.render(React.createElement('div', {}, viewbox),document.getElementById('reactContainer'))
+    var viewbox = React.createElement(Viewbox, {messages: [_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)]});
+    var textbox = React.createElement(Textbox, {viewbox: viewbox});
+    ReactDOM.render(React.createElement('div', {}, viewbox, textbox),document.getElementById('reactContainer'))
   }
 </script>
 <body>
   <div id="reactContainer"></div>
-  <input type="textbox" id="textbox">
 
 </body>
