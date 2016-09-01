@@ -24,21 +24,12 @@
   });
 
   var Viewbox = React.createClass({
-    getInitialState: function(){
-      return {
-        messages: this.props.messages
-      }
+    getInitialState: function() {
+      return {pink: 0}
     },
-    createMessage: function() {
-      var messages = this.state.messages
-      messages.unshift(_.sample(sampleMessages));
-      this.setState({messages: messages, messagesLength: messages.length})
-    },
-    componentDidMount: function() {
-      setInterval(this.createMessage, 400);
-    },
-    componentDidUpdate: function(prevProps, prevState) {
-      if (this.state.messagesLength > prevState.messagesLength) {
+    componentDidUpdate: function(prevProps) {
+      console.log('number of messages:', this.props.messagesLength)
+      if (this.props.messagesLength > prevProps.messagesLength) {
         this.setState({pink: 1})
       }
     },
@@ -60,7 +51,7 @@
         backgroundColor: bgColor
       }
 
-      thread = React.createElement(Thread, {messages: this.state.messages});
+      thread = React.createElement(Thread, {messages: this.props.messages});
       return React.createElement('div', {className: 'viewbox', style: style}, thread);
     }
   })
@@ -71,10 +62,24 @@
     }
   });
 
-  window.onload = function() {
-    var viewbox = React.createElement(Viewbox, {messages: [_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)]});
-    var textbox = React.createElement(Textbox, {viewbox: viewbox});
+  var messages = [_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)]
+  var messageStore = {messages: messages, messagesLength: messages.length}
+
+  var createMessage = function() {
+    messageStore.messages.unshift(_.sample(sampleMessages))
+    messageStore.messagesLength = messageStore.messages.length
+    renderView(messageStore)
+  }
+
+  var renderView = function(messageStore) {
+    var viewbox = React.createElement(Viewbox, messageStore)
+    var textbox = React.createElement(Textbox, {viewbox: viewbox})
     ReactDOM.render(React.createElement('div', {}, viewbox, textbox),document.getElementById('reactContainer'))
+  }
+
+  window.onload = function() {
+    renderView(messageStore)
+    setInterval(createMessage,450)
   }
 </script>
 <body>
