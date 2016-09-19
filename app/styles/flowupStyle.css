@@ -44,3 +44,9 @@ body {
   padding-bottom: 40px;
 
 }
+
+#indicator-newMessage {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
