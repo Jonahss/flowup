@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import React from 'react';
 import _ from 'lodash';
 import {Viewbox, Textbox} from 'components/lump'
-import {Indicator} from 'components/indicator'
+import {EventIndicator, BoolIndicator} from 'components/indicator'
 import EventEmitter from 'wolfy87-eventemitter'
 
 class MessageStore extends EventEmitter {
@@ -21,15 +21,22 @@ var messageStore = new MessageStore([_.sample(sampleMessages), _.sample(sampleMe
 var createMessage = function() {
   messageStore.messages.unshift(_.sample(sampleMessages))
   messageStore.messagesLength = messageStore.messages.length
-  messageStore.emitEvent('newMessage')
+  messageStore.emit('newMessage')
   renderView(messageStore)
 }
+
+class ScrollState extends EventEmitter {
+
+}
+var scrollState = new ScrollState();
+global.scrollState = scrollState
 
 var renderView = function(messageStore) {
   var viewbox = React.createElement(Viewbox, {messages: messageStore.messages, messagesLength: messageStore.messagesLength})
   var textbox = React.createElement(Textbox, {viewbox: viewbox})
-  var indicator = React.createElement(Indicator, {name: 'newMessage', color: 'pink', emitter: messageStore, event: 'newMessage'})
-  var components = ReactDOM.render(React.createElement('div', {}, indicator, viewbox, textbox),document.getElementById('reactContainer'))
+  var newMessageIndicator = React.createElement(EventIndicator, {name: 'newMessage', color: 'pink', emitter: messageStore, event: 'newMessage'})
+  var scrollIndicator = React.createElement(BoolIndicator, {name: 'scroll', bool: true, emitter: scrollState, event: 'scroll'})
+  var components = ReactDOM.render(React.createElement('div', {}, newMessageIndicator, scrollIndicator, viewbox, textbox),document.getElementById('reactContainer'))
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -3,7 +3,7 @@ import React from 'react'
 let opacityChange = .3
 let framerate = 100 //ms
 
-class Indicator extends React.Component {
+class EventIndicator extends React.Component {
   constructor (props) {
     super (props)
     this.state = {
@@ -55,6 +55,42 @@ class Indicator extends React.Component {
   }
 }
 
+class BoolIndicator extends React.Component {
+  constructor(props) {
+    super (props)
+    this.state = {
+      bool: this.props.bool
+    }
+  }
+  flip(bool) {
+    console.log('FLIP', this)
+    this.setState({bool})
+  }
+  componentDidMount() {
+    var flip = function(bool) {
+      this.flip(bool)
+    }.bind(this)
+
+    this.props.emitter.on(this.props.event, flip)
+  }
+  componentWillUnmount() {
+    this.props.emitter.off(this.props.event)
+  }
+  render() {
+    let name = `indicator-${this.props.name}`
+    let color = this.state.bool ? 'blue' : 'red'
+
+    let style = {
+      width: '10px',
+      height: '10px',
+      backgroundColor: color,
+    }
+
+    return <div key={name} id={name} className="jss-indicator" style={style}></div>
+  }
+}
+
 module.exports = {
-  Indicator: Indicator
+  EventIndicator: EventIndicator,
+  BoolIndicator: BoolIndicator,
 }
