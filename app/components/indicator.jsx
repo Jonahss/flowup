@@ -63,7 +63,7 @@ class BoolIndicator extends React.Component {
     }
   }
   flip(bool) {
-    console.log('FLIP', this)
+    console.log('FLIP', bool)
     this.setState({bool})
   }
   componentDidMount() {
