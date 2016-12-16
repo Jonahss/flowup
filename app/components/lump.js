@@ -1,9 +1,14 @@
 // lump of a bunch of components
 import React from 'react'
 import VisibilitySensor from 'react-visibility-sensor'
+import EventEmitter from 'wolfy87-eventemitter'
 import {Message} from './message.jsx'
 import _ from 'lodash'
 
+if (!global.scrollState) {
+  class ScrollState extends EventEmitter {}
+  global.scrollState = new ScrollState()
+}
 
 var Thread = React.createClass({
   render: function() {

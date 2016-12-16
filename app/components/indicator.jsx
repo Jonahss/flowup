@@ -3,6 +3,10 @@ import React from 'react'
 let opacityChange = .3
 let framerate = 100 //ms
 
+// props: emitter - an event emitter
+//        event - name of event to subscribe to
+//        name
+//        color
 class EventIndicator extends React.Component {
   constructor (props) {
     super (props)
@@ -63,7 +67,6 @@ class BoolIndicator extends React.Component {
     }
   }
   flip(bool) {
-    console.log('FLIP', bool)
     this.setState({bool})
   }
   componentDidMount() {

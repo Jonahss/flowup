@@ -26,17 +26,11 @@ var createMessage = function() {
   renderView(messageStore)
 }
 
-class ScrollState extends EventEmitter {
-
-}
-var scrollState = new ScrollState();
-global.scrollState = scrollState
-
 var renderView = function(messageStore) {
   var viewbox = React.createElement(Viewbox, {messages: messageStore.messages, messagesLength: messageStore.messagesLength})
   var textbox = React.createElement(Textbox, {viewbox: viewbox})
   var newMessageIndicator = React.createElement(EventIndicator, {name: 'newMessage', color: 'pink', emitter: messageStore, event: 'newMessage'})
-  var scrollIndicator = React.createElement(BoolIndicator, {name: 'scroll', bool: true, emitter: scrollState, event: 'scroll'})
+  var scrollIndicator = React.createElement(BoolIndicator, {name: 'scroll', bool: true, emitter: global.scrollState, event: 'scroll'})
   var components = ReactDOM.render(React.createElement('div', {}, newMessageIndicator, scrollIndicator, viewbox, textbox),document.getElementById('reactContainer'))
 }
 
