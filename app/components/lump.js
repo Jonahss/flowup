@@ -36,10 +36,6 @@ var Viewbox = React.createClass({
   }
 })
 
-var Textbox = React.createClass({
-  render: function() {
-    return React.createElement('input', {type: 'textbox', className: 'Textbox'});
-  }
-});
 
-module.exports = { Message, Thread, Viewbox, Textbox }
+
+module.exports = { Message, Thread, Viewbox }

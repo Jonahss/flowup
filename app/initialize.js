@@ -2,7 +2,8 @@ import 'babel-polyfill'
 import ReactDOM from 'react-dom';
 import React from 'react';
 import _ from 'lodash';
-import {Viewbox, Textbox} from 'components/lump'
+import {Viewbox} from 'components/lump'
+import {Textbox} from 'components/textbox'
 import {EventIndicator, BoolIndicator} from 'components/indicator'
 import EventEmitter from 'wolfy87-eventemitter'
 
