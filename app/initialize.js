@@ -14,20 +14,23 @@ class MessageStore extends EventEmitter {
     this.messages = startingMessages
     this.messagesLength = this.messages.length
   }
+
+  addMessage (message) {
+    this.messages.unshift(message)
+    this.messagesLength = this.messages.length
+    this.emit('newMessage')
+  }
 }
 
 var sampleMessages = ['hi', 'yo', 'hello', 'chuckwudi', "it's raining today", 'i just got engaged!', 'that sux :(', "how's it goin?"];
 var messageStore = new MessageStore([_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)])
 
 var createMessage = function() {
-  messageStore.messages.unshift(_.sample(sampleMessages))
-  messageStore.messagesLength = messageStore.messages.length
-  messageStore.emit('newMessage')
-  renderView(messageStore)
+  messageStore.addMessage(_.sample(sampleMessages))
 }
 
 var renderView = function(messageStore) {
-  var viewbox = React.createElement(Viewbox, {messages: messageStore.messages, messagesLength: messageStore.messagesLength})
+  var viewbox = React.createElement(Viewbox, {messageStore: messageStore})
   var textbox = React.createElement(Textbox, {viewbox: viewbox})
   var newMessageIndicator = React.createElement(EventIndicator, {name: 'newMessage', color: 'pink', emitter: messageStore, event: 'newMessage'})
   var scrollIndicator = React.createElement(BoolIndicator, {name: 'scroll', bool: true, emitter: global.scrollState, event: 'scroll'})
@@ -36,7 +39,7 @@ var renderView = function(messageStore) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderView(messageStore)
-  setInterval(createMessage,500)
+  setInterval(createMessage, 400)
 
 
   let p = new Promise((resolve) => {
