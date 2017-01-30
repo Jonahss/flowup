@@ -2,7 +2,7 @@ import 'babel-polyfill'
 import ReactDOM from 'react-dom';
 import React from 'react';
 import _ from 'lodash';
-import {Viewbox} from 'components/lump'
+import {Viewbox} from 'components/threads'
 import {Textbox} from 'components/textbox'
 import {EventIndicator, BoolIndicator} from 'components/indicator'
 import EventEmitter from 'wolfy87-eventemitter'
@@ -18,7 +18,7 @@ class MessageStore extends EventEmitter {
   addMessage (message) {
     this.messages.unshift(message)
     this.messagesLength = this.messages.length
-    this.emit('newMessage')
+    this.emit('newMessage', message)
   }
 }
 
@@ -26,7 +26,9 @@ var sampleMessages = ['hi', 'yo', 'hello', 'chuckwudi', "it's raining today", 'i
 var messageStore = new MessageStore([_.sample(sampleMessages), _.sample(sampleMessages), _.sample(sampleMessages)])
 
 var createMessage = function() {
-  messageStore.addMessage(_.sample(sampleMessages))
+  //if (messageStore.messages.length > 5) { return }
+  //messageStore.addMessage(_.sample(sampleMessages))
+  messageStore.addMessage(messageStore.messagesLength)
 }
 
 var renderView = function(messageStore) {
@@ -39,7 +41,7 @@ var renderView = function(messageStore) {
 
 document.addEventListener('DOMContentLoaded', async () => {
   renderView(messageStore)
-  setInterval(createMessage, 400)
+  setInterval(createMessage, 500)
 
 
   let p = new Promise((resolve) => {

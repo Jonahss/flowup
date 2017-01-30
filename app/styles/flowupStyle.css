@@ -8,11 +8,15 @@ body {
   flex-direction: column-reverse;
   overflow: auto;
 }
-
 .Thread {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.Flowup {
   flex: 1 0 auto;
   width: 300px;
-  overflow: auto;
   display: flex;
   flex-direction: column-reverse;
   justify-content: flex-start;
